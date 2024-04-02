@@ -6,6 +6,7 @@
 **1. Розробити клас, що серіалізується, для зберігання параметрів і результатів
 обчислень. Використовуючи агрегування, розробити клас для знаходження рішення
 задачі.**
+
 Calc.java:
 ```java
 package ex01;
@@ -110,6 +111,7 @@ if (currentLengthOfSeq > maxLengthOfSeq) {
 2. Розробити клас для демонстрації в діалоговому режимі збереження та
 відновлення стану об'єкта, використовуючи серіалізацію. Показати особливості
 використання transient полів.
+
 Item2d.java:
 ```java
 package ex01;
@@ -215,6 +217,7 @@ public class Item2d implements Serializable {
 }
 
 ```
+
 Main.Java:
 ```java
 package ex01;
@@ -256,6 +259,7 @@ public class Main {
 3. Розробити клас для тестування коректності результатів обчислень та
 серіалізації/десеріалізації. Використовувати докладні коментарі для автоматичної генерації
 документації засобами javadoc.
+
 MainTest.java:
 ```java
 package ex01;
@@ -329,3 +333,287 @@ public class MainTest {
 Результат:
 
 ![](images/TaskResult1.png)
+
+## Завдання 2
+*1. Як основа використовувати вихідний текст проекту попередньої лабораторної роботи. Забезпечити розміщення результатів обчислень у колекції з можливістю збереження/відновлення.*
+
+Оновленний файл Main який викликає новий набір методів
+
+Main:
+```java
+package ex02;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * Обчислення і відображення результатів
+ * Містить реалізацію статичного методу main ()
+ * @author xone
+ * @version 2.0
+ * @see Main#main
+ */
+public class Main {
+    /** Об'єкт, що реалізує інтерфейс {@linkplain View};
+     * обслуговує колекцію об'єктів {@linkplain ex01.Item2d}
+     */
+    private View view;
+    /** Об'єкт для обчислення */
+    private Calc calc;
+
+    /** Ініціалізує поле {@linkplain Main#view view} та об'єкт Calc. */
+    public Main(View view) {
+        this.view = view;
+        this.calc = new Calc();
+    }
+
+    /** Виводить меню. */
+    protected void menu() {
+        String s = null;
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        do {
+            do {
+                System.out.println("Enter command...");
+                System.out.println("1 - view");
+                System.out.println("2 - generate");
+                System.out.println("3 - save");
+                System.out.println("4 - restore");
+                System.out.println("5 - quit");
+                System.out.print("> ");
+                try {
+                    s = in.readLine();
+                } catch(IOException e) {
+                    System.out.println("Error: " + e);
+                    System.exit(0);
+                }
+            } while (s.length() != 1);
+            switch (s.charAt(0)) {
+                case '5':
+                    System.out.println("Exit.");
+                    break;
+                case '1':
+                    System.out.println("View current.");
+                    view.viewShow();
+                    break;
+                case '2':
+                    System.out.println("Random generation.");
+                    double alpha = Math.random() * 360.0;
+                    int result = calc.calculate(alpha);
+                    view.viewInit();
+                    view.viewShow();
+                    System.out.println("Calculation result: " + result);
+                    break;
+                case '3':
+                    System.out.println("Save current.");
+                    try {
+                        view.viewSave();
+                        calc.save(); // Зберігаємо результати обчислення
+                    } catch (IOException e) {
+                        System.out.println("Serialization error: " + e);
+                    }
+                    view.viewShow();
+                    break;
+                case '4':
+                    System.out.println("Restore last saved.");
+                    try {
+                        view.viewRestore();
+                        calc.restore(); // Відновлюємо результати обчислення
+                    } catch (Exception e) {
+                        System.out.println("Serialization error: " + e);
+                    }
+                    view.viewShow();
+                    break;
+                default:
+                    System.out.println("Wrong command.");
+            }
+        } while(!s.equals("5"));
+    }
+
+    /**
+     * Виконується при запуску програми;
+     * викликає метод {@linkplain Main#menu() menu()}
+     * @param args - параметри запуску програми.
+     */
+    public static void main(String[] args) {
+        Main main = new Main(new ViewableResult().getView());
+        main.menu();
+    }
+}
+
+```
+*2. Використовуючи шаблон проектування Factory Method (Virtual Constructor), розробити ієрархію, що передбачає розширення за рахунок додавання нових відображуваних класів.*
+
+View.java:
+```java
+package ex02;
+import java.io.IOException;
+/** Product
+* (шаблон проектирования
+* Factory Method)<br>
+* Интерфейс "фабрикуемых"
+* объектов<br>
+* Объявляет методы
+* отображения объектов
+* @author xone
+* @version 1.0
+*/
+public interface View {
+/** Отображает заголовок */
+public void viewHeader();
+/** Отображает основную часть */
+public void viewBody();
+/** Отображает окончание */
+public void viewFooter();
+/** Отображает объект целиком */
+public void viewShow();
+/** Выполняет инициализацию */
+public void viewInit();
+/** Сохраняет данные для последующего восстановления */
+public void viewSave() throws IOException;
+/** Восстанавливает ранее сохранённые данные */
+public void viewRestore() throws Exception;
+```
+*3. Розширити ієрархію інтерфейсом "фабрикованих" об'єктів, що представляє набір методів для відображення результатів обчислень.*
+
+ViewResult:
+```java
+package ex02;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import ex01.Item2d;
+/** ConcreteProduct
+* (Шаблон проектирования
+* Factory Method)<br>
+* Вычисление функции,
+* сохранение и отображение
+* результатов
+* @author xone
+* @version 1.0
+* @see View
+*/
+public class ViewResult implements View {
+/** Имя файла, используемое при сериализации */
+private static final String FNAME = "items.bin";
+/** Определяет количество значений для вычисления по умолчанию */
+private static final int DEFAULT_NUM = 10;
+/** Коллекция аргументов и результатов вычислений */
+private ArrayList<Item2d> items = new ArrayList<Item2d>();
+/** Вызывает {@linkplain ViewResult#ViewResult(int n) ViewResult(int n)}
+* с параметром {@linkplain ViewResult#DEFAULT_NUM DEFAULT_NUM}
+*/
+public ViewResult() {
+this(DEFAULT_NUM);
+}
+/** Инициализирует коллекцию {@linkplain ViewResult#items}
+* @param n начальное количество элементов
+*/
+public ViewResult(int n) {
+for(int ctr = 0; ctr < n; ctr++) {
+items.add(new Item2d());
+}
+}
+/** Получить значение {@linkplain ViewResult#items}
+* @return текущее значение ссылки на объект {@linkplain ArrayList}
+*/
+public ArrayList<Item2d> getItems() {
+return items;
+}
+/** Вычисляет значение функции
+
+11
+
+* @param x аргумент вычисляемой функции
+* @return результат вычисления функции
+*/
+private double calc(double x) {
+return Math.sin(x * Math.PI / 180);
+}
+/** Вычисляет значение функции и сохраняет
+* результат в коллекции {@linkplain ViewResult#items}
+* @param stepX шаг приращения аргумента
+*/
+public void init(double stepX) {
+double x = 0.0;
+for(Item2d item : items) {
+item.setXY(x, calc(x));
+x += stepX;
+}
+}
+/** Вызывает <b>init(double stepX)</b> со случайным значением аргумента<br>
+* {@inheritDoc}
+*/
+@Override
+public void viewInit() {
+init(Math.random() * 360.0);
+}
+/** Реализация метода {@linkplain View#viewSave()}<br>
+* {@inheritDoc}
+*/
+@Override
+public void viewSave() throws IOException {
+ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(FNAME));
+os.writeObject(items);
+os.flush();
+os.close();
+}
+/** Реализация метода {@linkplain View#viewRestore()}<br>
+* {@inheritDoc}
+*/
+@SuppressWarnings("unchecked")
+@Override
+public void viewRestore() throws Exception {
+ObjectInputStream is = new ObjectInputStream(new FileInputStream(FNAME));
+items = (ArrayList<Item2d>) is.readObject();
+is.close();
+}
+/** Реализация метода {@linkplain View#viewHeader()}<br>
+* {@inheritDoc}
+*/
+@Override
+public void viewHeader() {
+System.out.println("Results:");
+}
+/** Реализация метода {@linkplain View#viewBody()}<br>
+* {@inheritDoc}
+*/
+@Override
+public void viewBody() {
+for(Item2d item : items) {
+System.out.printf("(%.0f; %.3f) ", item.getX(), item.getY());
+}
+System.out.println();
+}
+/** Реализация метода {@linkplain View#viewFooter()}<br>
+* {@inheritDoc}
+*/
+@Override
+public void viewFooter() {
+System.out.println("End.");
+}
+/** Реализация метода {@linkplain View#viewShow()}<br>
+* {@inheritDoc}
+*/
+@Override
+public void viewShow() {
+viewHeader();
+viewBody();
+viewFooter();
+}
+}
+```
+*4. Реалізувати ці методи виведення результатів у текстовому виде.*
+
+Реалізовано в файлі Main
+
+*5. Розробити та реалізувати інтерфейс для "фабрикуючого" методу*
+
+Реалізовано в файлі Main
+
+Результат:
+
+![](images/TaskResult2.png)
