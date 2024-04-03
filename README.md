@@ -473,6 +473,7 @@ public void viewInit();
 public void viewSave() throws IOException;
 /** Восстанавливает ранее сохранённые данные */
 public void viewRestore() throws Exception;
+}
 ```
 *3. Розширити ієрархію інтерфейсом "фабрикованих" об'єктів, що представляє набір методів для відображення результатів обчислень.*
 
@@ -524,9 +525,6 @@ public ArrayList<Item2d> getItems() {
 return items;
 }
 /** Вычисляет значение функции
-
-11
-
 * @param x аргумент вычисляемой функции
 * @return результат вычисления функции
 */
