@@ -1,13 +1,13 @@
 # OOP_Practice
-
 ## Завдання 1
+(виконано якщо ви бачите цей репозиторій)
+
+## Завдання 2
 ### Основне завдання:  Визначити найбільшу довжину послідовності 1 в подвійному поданні цілісної суми квадрата і куба 10*cos(α).
 
-**1. Розробити клас, що серіалізується, для зберігання параметрів і результатів
-обчислень. Використовуючи агрегування, розробити клас для знаходження рішення
-задачі.**
+*1. Розробити клас, що серіалізується, для зберігання параметрів і результатів обчислень. Використовуючи агрегування, розробити клас для знаходження рішення задачі.*
 
-Calc.java:
+## Calc.java:
 ```java
 package ex01;
 
@@ -108,11 +108,9 @@ if (currentLengthOfSeq > maxLengthOfSeq) {
 }
 
 ```
-2. Розробити клас для демонстрації в діалоговому режимі збереження та
-відновлення стану об'єкта, використовуючи серіалізацію. Показати особливості
-використання transient полів.
+*2. Розробити клас для демонстрації в діалоговому режимі збереження та відновлення стану об'єкта, використовуючи серіалізацію. Показати особливості використання transient полів.*
 
-Item2d.java:
+## Item2d.java:
 ```java
 package ex01;
 
@@ -218,7 +216,7 @@ public class Item2d implements Serializable {
 
 ```
 
-Main.Java:
+## Main.Java:
 ```java
 package ex01;
 
@@ -256,11 +254,9 @@ public class Main {
 
 
 ```
-3. Розробити клас для тестування коректності результатів обчислень та
-серіалізації/десеріалізації. Використовувати докладні коментарі для автоматичної генерації
-документації засобами javadoc.
+*3. Розробити клас для тестування коректності результатів обчислень та серіалізації/десеріалізації. Використовувати докладні коментарі для автоматичної генерації документації засобами javadoc.*
 
-MainTest.java:
+## MainTest.java:
 ```java
 package ex01;
 
@@ -334,12 +330,12 @@ public class MainTest {
 
 ![](images/TaskResult1.png)
 
-## Завдання 2
+## Завдання 3
 *1. Як основа використовувати вихідний текст проекту попередньої лабораторної роботи. Забезпечити розміщення результатів обчислень у колекції з можливістю збереження/відновлення.*
 
 Оновленний файл Main який викликає новий набір методів
 
-Main:
+## Main:
 ```java
 package ex02;
 
@@ -444,7 +440,7 @@ public class Main {
 ```
 *2. Використовуючи шаблон проектування Factory Method (Virtual Constructor), розробити ієрархію, що передбачає розширення за рахунок додавання нових відображуваних класів.*
 
-View.java:
+## View.java:
 ```java
 package ex02;
 import java.io.IOException;
@@ -477,7 +473,7 @@ public void viewRestore() throws Exception;
 ```
 *3. Розширити ієрархію інтерфейсом "фабрикованих" об'єктів, що представляє набір методів для відображення результатів обчислень.*
 
-ViewResult:
+## ViewResult:
 ```java
 package ex02;
 import java.io.FileInputStream;
@@ -615,3 +611,237 @@ viewFooter();
 Результат:
 
 ![](images/TaskResult2.png)
+
+## Завдання 4 (Я хуже аутиста тому-що до кінця це виконати не вийшло, а ще я не уявляю чому таблиця видає незрозумілі значення замість згенерованого кута і обчислень)
+*1.За основу використовувати вихідний текст проекту попередньої лабораторної роботи Використовуючи шаблон проектування Factory Method (Virtual Constructor), розширити ієрархію похідними класами, реалізують методи для подання результатів у вигляді текстової таблиці. Параметри відображення таблиці мають визначатися користувачем.
+2.Продемонструвати заміщення (перевизначення, overriding), поєднання (перевантаження, overloading), динамічне призначення методів (Пізнє зв'язування, поліморфізм, dynamic method dispatch).
+3. Забезпечити діалоговий інтерфейс із користувачем.
+4. Розробити клас для тестування основної функціональності.
+5. Використати коментарі для автоматичної генерації документації засобами javadoc.*
+
+Змінені файли: 
+## Main:
+```java
+package ex03;
+
+import ex02.Calc;
+import ex02.View;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * Обчислення і відображення результатів
+ * Містить реалізацію статичного методу main ()
+ * @author xone
+ * @version 2.0
+ * @see Main#main
+ */
+public class Main {
+    /** Об'єкт, що реалізує інтерфейс {@linkplain View};
+     * обслуговує колекцію об'єктів {@linkplain ex01.Item2d}
+     */
+    private View view;
+    /** Об'єкт для обчислення */
+    private Calc calc;
+
+    /** Ініціалізує поле {@linkplain Main#view view} та об'єкт Calc.
+     * @param view */
+    public Main(View view) {
+        this.view = view;
+        this.calc = new Calc();
+    }
+
+    /** Виводить меню. */
+    protected void menu() {
+        String s = null;
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        do {
+            do {
+                System.out.println("Enter command...");
+                System.out.println("1 - view");
+                System.out.println("2 - generate");
+                System.out.println("3 - save");
+                System.out.println("4 - restore");
+                System.out.println("5 - quit");
+                System.out.print("> ");
+                try {
+                    s = in.readLine();
+                } catch(IOException e) {
+                    System.out.println("Error: " + e);
+                    System.exit(0);
+                }
+            } while (s.length() != 1);
+            switch (s.charAt(0)) {
+                case '5':
+                    System.out.println("Exit.");
+                    break;
+                case '1':
+                    System.out.println("View current.");
+                    view.viewShow();
+                    break;
+                case '2':
+                    System.out.println("Random generation.");
+                    double alpha = Math.random() * 360.0;
+                    int result = calc.calculate(alpha);
+                    view.viewInit();
+                    view.viewShow();
+                    System.out.println("Calculation result: " + result);
+                    break;
+                case '3':
+                    System.out.println("Save current.");
+                    try {
+                        view.viewSave();
+                        calc.save(); // Зберігаємо результати обчислення
+                    } catch (IOException e) {
+                        System.out.println("Serialization error: " + e);
+                    }
+                    view.viewShow();
+                    break;
+                case '4':
+                    System.out.println("Restore last saved.");
+                    try {
+                        view.viewRestore();
+                        calc.restore(); // Відновлюємо результати обчислення
+                    } catch (Exception e) {
+                        System.out.println("Serialization error: " + e);
+                    }
+                    view.viewShow();
+                    break;
+                default:
+                    System.out.println("Wrong command.");
+            }
+        } while(!s.equals("5"));
+    }
+
+    /** Выполняется при запуске программы;
+    * вызывает метод {@linkplain ex02.Main#menu menu()}
+    * @param args - параметры запуска программы
+    */
+    public static void main(String[] args) {
+        Main main = new Main(new ViewableTable().getView());
+        main.menu();
+    }
+}
+
+```
+
+## ViewTable:
+```java
+package ex03;
+
+import java.util.Formatter;
+import ex01.Item2d;
+import ex02.ViewResult;
+/** ConcreteProduct
+* (шаблон проектирования
+* Factory Method)<br>
+* Виведення у вигляді таблиці
+* @author hekku
+* @version 1.0
+* @see ViewResult
+*/
+
+public class ViewTable extends ViewResult {
+/** Визначає ширину таблиці за замовчуванням */
+private static final int DEFAULT_WIDTH = 20;
+/** Поточна ширина таблиці */
+private int width;
+/** Встановлює {@linkplain ViewTable#width width}
+* значенням {@linkplain ViewTable#DEFAULT_WIDTH DEFAULT_WIDTH}<br>
+* Викликає конструктор суперкласу {@linkplain ViewResult#ViewResult() ViewResult()}
+*/
+public ViewTable() {
+width = DEFAULT_WIDTH;
+}
+/** Встановлює {@linkplain ViewTable#width} значенням <b>width</b><br>
+* Викликає конструктор суперкласу {@linkplain ViewResult#ViewResult() ViewResult()}
+* @param width визначає ширину таблиці
+*/
+public ViewTable(int width) {
+this.width = width;
+}
+
+/** Встановлює {@linkplain ViewTable#width} значенням <b>width</b><br>
+* Викликає конструктор суперкласу {@linkplain ViewResult#ViewResult(int n) ViewResult(int
+* @param width визначає ширину таблиці
+* @param n кількість елементів колекції; передається суперконструктору
+*/
+public ViewTable(int width, int n) {
+super(n);
+this.width = width;
+}
+/** Встановлює поле {@linkplain ViewTable#width} значенням <b>width</b>
+* @param width нова ширина таблиці
+* @return задана параметром <b>width</b> ширина таблиці
+*/
+public int setWidth(int width) {
+return this.width = width;
+}
+/** Повертає значення поля {@linkplain ViewTable#width}
+* @return поточна ширина таблиці
+*/
+public int getWidth() {
+return width;
+}
+/** Виводить вертикальний роздільник шириною {@linkplain ViewTable#width} символів */
+private void outLine() {
+for(int i = width; i > 0; i--) {
+System.out.print('-');
+}
+}
+/** Викликає {@linkplain ViewTable#outLine()}; завершує вивід роздільником рядків */
+private void outDelimiter() {
+outLine();
+System.out.println();
+}
+/** Виводить заголовок таблиці */
+@Override
+public void viewHeader() {
+outDelimiter();
+}
+/** Виводить тіло таблиці */
+@Override
+public void viewBody() {
+    Formatter fmt = new Formatter();
+    for(Item2d item : getItems()) {
+        fmt.format("| %" + width + ".0f | %" + width + ".3f |\n",
+                    item.geta(), item.getCons1());
+    }
+    System.out.print(fmt.toString()); // Виводимо сформатований рядок
+    fmt.close();
+}
+
+/** Виводить кінець таблиці */
+@Override
+public void viewFooter() {
+outDelimiter();
+}
+}
+```
+
+## ViewableTable:
+```java
+package ex03;
+
+import ex02.ViewableResult;
+import ex02.View;
+/** ConcreteCreator
+* (шаблон проектирования
+* Factory Method)<br>
+* Объявляет метод,
+* "фабрикующий" объекты
+* @author xone
+* @version 1.0
+* @see ViewableResult
+* @see ViewableTable#getView()
+*/
+public class ViewableTable extends ViewableResult {
+/** Создаёт отображаемый объект {@linkplain ViewTable}
+     * @return  */
+@Override
+public View getView() {
+    return new ViewTable();
+    }
+}
+```
