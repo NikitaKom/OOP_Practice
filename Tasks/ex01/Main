@@ -1,0 +1,85 @@
+```java
+package ex01;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+/** Вычисление и отображение результатов.
+* Содержит реализацию статического метода main().
+* @author xone
+* @version 1.0
+* @see Main#main
+*/
+public class Main {
+/** Объект класса {@linkplain Calc}.<br>Решает задачу инд. задания. */
+private Calc calc = new Calc();
+Scanner scanner = new Scanner(System.in);
+boolean running = true;
+/** Отображает меню. */
+private void menu() {
+String s = null;
+BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+do {
+do {
+System.out.println("Enter command...");
+System.out.print("'q'uit, 'v'iew, 'w'rite, 's'ave, 'r'estore: ");
+try {
+s = in.readLine();
+} catch(IOException e) {
+System.out.println("Error: " + e);
+System.exit(0);
+}
+} while (s.length() != 1);
+switch (s.charAt(0)) {
+case 'q':
+System.out.println("Exit.");
+break;
+case 'v':
+System.out.println("View current.");
+calc.show();
+break;
+case 'w':
+System.out.print("Enter the value of alpha (in degrees): ");
+double alpha = scanner.nextDouble();
+                
+double sum = calc.calc(alpha);
+System.out.println("Sum of square and cube of 10*cos(a): " + sum);
+
+System.out.println("Number of consecutive ones: " + calc.consOnes(sum));
+calc.init(sum);
+
+break;
+
+case 's':
+System.out.println("Save current.");
+try {
+calc.save();
+} catch (IOException e) {
+System.out.println("Serialization error: " + e);
+}
+calc.show();
+break;
+case 'r':
+System.out.println("Restore last saved.");
+try {
+calc.restore();
+} catch (Exception e) {System.out.println("Serialization error: " + e);
+}
+calc.show();
+break;
+default:
+System.out.print("Wrong command. ");
+}
+} while(s.charAt(0) != 'q');
+}
+/** Выполняется при запуске программы.
+* Вычисляется значение функции для различных аргументов.
+* Результаты вычислений выводятся на экран.
+* @param args - параметры запуска программы.
+*/
+public static void main(String[] args) {
+Main main = new Main();
+main.menu();
+}
+}
+```
