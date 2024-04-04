@@ -1,4 +1,3 @@
-```java
 package ex01;
 import java.io.Serializable;
 /** Хранит исходные данные и результат вычислений.
@@ -87,5 +86,3 @@ return false;
 return true;
 }
 }
-
-```
