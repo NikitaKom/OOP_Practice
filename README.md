@@ -4,11 +4,15 @@
 
 ## Завдання 2
 
-# Я зараз зрозумів наскільки все перемудрив і запоров. Почав спочатку, у мене буде до вас декілька питань в п'ятницю с приводу коду (це завдання вже змінене, 3 та 4 можете навіть не читати)
+# У мене виникли деякі проблеми з JUnit тестуванням, тому зараз просто робочі задачі, а про тести буду питати завтра
 
 ### Основне завдання:  Визначити найбільшу довжину послідовності 1 в подвійному поданні цілісної суми квадрата і куба 10*cos(α).
 
 *1. Розробити клас, що серіалізується, для зберігання параметрів і результатів обчислень. Використовуючи агрегування, розробити клас для знаходження рішення задачі.*
+
+*2. Розробити клас для демонстрації в діалоговому режимі збереження та відновлення стану об'єкта, використовуючи серіалізацію. Показати особливості використання transient полів.*
+
+*3. Розробити клас для тестування коректності результатів обчислень та серіалізації/десеріалізації. Використовувати докладні коментарі для автоматичної генерації документації засобами javadoc.*
 
 ## Calc.java:
 ```java
@@ -110,7 +114,6 @@ is.close();
 }
 }
 ```
-*2. Розробити клас для демонстрації в діалоговому режимі збереження та відновлення стану об'єкта, використовуючи серіалізацію. Показати особливості використання transient полів.*
 
 ## Item2d.java:
 ```java
@@ -292,7 +295,6 @@ main.menu();
 }
 
 ```
-*3. Розробити клас для тестування коректності результатів обчислень та серіалізації/десеріалізації. Використовувати докладні коментарі для автоматичної генерації документації засобами javadoc.*
 
 ## MainTest.java:
 ```java
@@ -356,8 +358,15 @@ assertEquals(x, calc.getResult().getX(), .1e-10);
 ## Завдання 3
 *1. Як основа використовувати вихідний текст проекту попередньої лабораторної роботи. Забезпечити розміщення результатів обчислень у колекції з можливістю збереження/відновлення.*
 
-Оновленний файл Main який викликає новий набір методів
+*2. Використовуючи шаблон проектування Factory Method (Virtual Constructor), розробити ієрархію, що передбачає розширення за рахунок додавання нових відображуваних класів.*
 
+*3. Розширити ієрархію інтерфейсом "фабрикованих" об'єктів, що представляє набір методів для відображення результатів обчислень.*
+
+*4. Реалізувати ці методи виведення результатів у текстовому виде.*
+
+*5. Розробити та реалізувати інтерфейс для "фабрикуючого" методу*
+
+Оновлені і нові файли:
 ## Main:
 ```java
 package ex02;
@@ -461,7 +470,7 @@ public class Main {
 }
 
 ```
-*2. Використовуючи шаблон проектування Factory Method (Virtual Constructor), розробити ієрархію, що передбачає розширення за рахунок додавання нових відображуваних класів.*
+
 
 ## View.java:
 ```java
@@ -494,7 +503,6 @@ public void viewSave() throws IOException;
 public void viewRestore() throws Exception;
 }
 ```
-*3. Розширити ієрархію інтерфейсом "фабрикованих" об'єктів, що представляє набір методів для відображення результатів обчислень.*
 
 ## ViewResult:
 ```java
@@ -623,129 +631,188 @@ viewFooter();
 }
 }
 ```
-*4. Реалізувати ці методи виведення результатів у текстовому виде.*
-
-Реалізовано в файлі Main
-
-*5. Розробити та реалізувати інтерфейс для "фабрикуючого" методу*
-
-Реалізовано в файлі Main
 
 Результат:
 
 ![](images/TaskResult2.png)
 
-## Завдання 4 (не завершене)
-*1.За основу використовувати вихідний текст проекту попередньої лабораторної роботи Використовуючи шаблон проектування Factory Method (Virtual Constructor), розширити ієрархію похідними класами, реалізують методи для подання результатів у вигляді текстової таблиці. Параметри відображення таблиці мають визначатися користувачем.
-2.Продемонструвати заміщення (перевизначення, overriding), поєднання (перевантаження, overloading), динамічне призначення методів (Пізнє зв'язування, поліморфізм, dynamic method dispatch).
-3. Забезпечити діалоговий інтерфейс із користувачем.
-4. Розробити клас для тестування основної функціональності.
-5. Використати коментарі для автоматичної генерації документації засобами javadoc.*
+(Колекція почала правильно заповнюватись тільки при виконанні наступного завдання, тому тут такий результат. Далі все працює коректно)
+
+## Завдання 4
+*1.За основу використовувати вихідний текст проекту попередньої лабораторної роботи Використовуючи шаблон проектування Factory Method (Virtual Constructor), розширити ієрархію похідними класами, реалізують методи для подання результатів у вигляді текстової таблиці. Параметри відображення таблиці мають визначатися користувачем.*
+
+*2.Продемонструвати заміщення (перевизначення, overriding), поєднання (перевантаження, overloading), динамічне призначення методів (Пізнє зв'язування, поліморфізм, dynamic method dispatch).*
+
+*3. Забезпечити діалоговий інтерфейс із користувачем.*
+
+*4. Розробити клас для тестування основної функціональності.*
+
+*5. Використати коментарі для автоматичної генерації документації засобами javadoc.*
 
 Змінені файли: 
 ## Main:
 ```java
-package ex03;
-
-import ex02.Calc;
+package ex01;
 import ex02.View;
-import java.io.BufferedReader;
+import ex03.ViewTable;
+import ex03.ViewableTable;
+import ex02.ViewResult;
 import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
-/**
- * Обчислення і відображення результатів
- * Містить реалізацію статичного методу main ()
- * @author xone
- * @version 2.0
- * @see Main#main
- */
+import java.util.Scanner;
+/** Вычисление и отображение результатов.
+* Содержит реализацию статического метода main().
+* @author hekku
+* @version 1.0
+* @see Main#main
+*/
 public class Main {
-    /** Об'єкт, що реалізує інтерфейс {@linkplain View};
-     * обслуговує колекцію об'єктів {@linkplain ex01.Item2d}
-     */
-    private View view;
-    /** Об'єкт для обчислення */
-    private Calc calc;
+Scanner scanner = new Scanner(System.in);
+boolean running = true;
 
-    /** Ініціалізує поле {@linkplain Main#view view} та об'єкт Calc.
-     * @param view */
-    public Main(View view) {
-        this.view = view;
-        this.calc = new Calc();
-    }
 
-    /** Виводить меню. */
-    protected void menu() {
-        String s = null;
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        do {
-            do {
-                System.out.println("Enter command...");
-                System.out.println("1 - view");
-                System.out.println("2 - generate");
-                System.out.println("3 - save");
-                System.out.println("4 - restore");
-                System.out.println("5 - quit");
-                System.out.print("> ");
-                try {
-                    s = in.readLine();
-                } catch(IOException e) {
-                    System.out.println("Error: " + e);
-                    System.exit(0);
-                }
-            } while (s.length() != 1);
-            switch (s.charAt(0)) {
-                case '5':
-                    System.out.println("Exit.");
-                    break;
-                case '1':
-                    System.out.println("View current.");
-                    view.viewShow();
-                    break;
-                case '2':
-                    System.out.println("Random generation.");
-                    double alpha = Math.random() * 360.0;
-                    int result = calc.calculate(alpha);
-                    view.viewInit();
-                    view.viewShow();
-                    System.out.println("Calculation result: " + result);
-                    break;
-                case '3':
-                    System.out.println("Save current.");
-                    try {
-                        view.viewSave();
-                        calc.save(); // Зберігаємо результати обчислення
-                    } catch (IOException e) {
-                        System.out.println("Serialization error: " + e);
-                    }
-                    view.viewShow();
-                    break;
-                case '4':
-                    System.out.println("Restore last saved.");
-                    try {
-                        view.viewRestore();
-                        calc.restore(); // Відновлюємо результати обчислення
-                    } catch (Exception e) {
-                        System.out.println("Serialization error: " + e);
-                    }
-                    view.viewShow();
-                    break;
-                default:
-                    System.out.println("Wrong command.");
-            }
-        } while(!s.equals("5"));
-    }
+/** Объект, реализующий интерфейс {@linkplain View};
+* обслуживает коллекцию объектов {@linkplain ex01.Item2d}
+*/
+private View view;
 
-    /** Выполняется при запуске программы;
-    * вызывает метод {@linkplain ex02.Main#menu menu()}
-    * @param args - параметры запуска программы
-    */
-    public static void main(String[] args) {
-        Main main = new Main(new ViewableTable().getView());
-        main.menu();
-    }
+/** Инициализирует поле {@linkplain Main#view view}.
+     * @param view - переменная для вывода коллекции*/
+public Main(View view) {
+this.view = view;
 }
+/** Отображает меню. */
+private void menu() {
+String s = null;
+BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+do {
+do {
+System.out.println("Enter command...");
+System.out.print("'q'uit, 'v'iew, 'w'rite, 'c'hange, 's'ave, 'r'estore: ");
+try {
+s = in.readLine();
+} catch(IOException e) {
+System.out.println("Error: " + e);
+System.exit(0);
+}
+} while (s.length() != 1);
+switch (s.charAt(0)) {
+case 'q':
+System.out.println("Exit.");
+break;
+case 'v':
+System.out.println("View current.");
+view.viewShow();
+break;
+case 'w':
+System.out.print("Enter the value of alpha (in degrees): ");
+double alpha = scanner.nextDouble();
+                
+double sum = view.calc(alpha);
+System.out.println("Sum of square and cube of 10*cos(a): " + sum);
+
+System.out.println("Number of consecutive ones: " + view.consOnes(sum));
+
+view.Init(sum);
+view.viewShow();
+
+break;
+case 'c':
+    System.out.println("Current width: " + view.getWidth());
+    System.out.println("Enter new width for the table: ");
+    int table = scanner.nextInt();
+    System.out.println("New width is: " + table); 
+    view.setWidth(table);
+    System.out.println("Table changed");
+    break;
+case 's':
+System.out.println("Save current.");
+try {
+view.viewSave();
+} catch (IOException e) {
+System.out.println("Serialization error: " + e);
+}
+view.viewShow();
+break;
+case 'r':
+System.out.println("Restore last saved.");
+try {
+view.viewRestore();
+} catch (Exception e) {
+System.out.println("Serialization error: " + e);
+}
+view.viewShow();
+break;
+default:
+System.out.print("Wrong command. ");
+}
+} while(s.charAt(0) != 'q');
+}
+/** Выполняется при запуске программы.
+* Вычисляется значение функции для различных аргументов.
+* Результаты вычислений выводятся на экран.
+* @param args - параметры запуска программы.
+*/
+public static void main(String[] args) {
+Main main = new Main(new ViewableTable().getView());
+main.menu();
+}
+}
+```
+
+## View
+```java
+package ex02;
+import java.io.IOException;
+/** Product
+* (шаблон проектирования
+* Factory Method)<br>
+* Интерфейс "фабрикуемых"
+* объектов<br>
+* Объявляет методы
+* отображения объектов
+* @author hekku
+* @version 1.0
+*/
+public interface View {
+/** Отображает заголовок */
+public void viewHeader();
+/** Отображает основную часть */
+public void viewBody();
+/** Отображает окончание */
+public void viewFooter();
+/** Отображает объект целиком */
+public void viewShow();
+/** Сохраняет данные для последующего восстановления
+     * @throws java.io.IOException */
+public void viewSave() throws IOException;
+/** Восстанавливает ранее сохранённые данные
+     * @throws java.lang.Exception */
+public void viewRestore() throws Exception;
+/** Выполняет инициализацию */
+public void viewInit();
+/** Дает возможность менять ширину таблицы
+     * @param width ширина таблицы*/
+public void setWidth(int width);
+/** Возвращает текущую ширину таблицы
+     * @return ширина таблицы*/
+public int getWidth();
+/** Высчитывает число по заданной формуле
+     * @param alpha угол вводимый пользователем
+     * @return число типа double*/
+public double calc(double alpha);
+/** Из ранее вычесленого числа вычисляет количество 
+ последовательных единиц
+     * @param num Число вычисленное в calc()
+     * @return количество последовательных единиц в числе sum*/
+public int consOnes(double num);
+/** сохраняет оба числа (высчитаное и последовательные единицы) в коллекцию
+     * @param x число вычисленное в calc*/
+public void Init(double x);
+}
+
+
 
 ```
 
@@ -759,7 +826,7 @@ import ex02.ViewResult;
 /** ConcreteProduct
 * (шаблон проектирования
 * Factory Method)<br>
-* Виведення у вигляді таблиці
+* Вивод в виде таблицы
 * @author hekku
 * @version 1.0
 * @see ViewResult
@@ -770,16 +837,16 @@ public class ViewTable extends ViewResult {
 private static final int DEFAULT_WIDTH = 20;
 /** Поточна ширина таблиці */
 private int width;
-/** Встановлює {@linkplain ViewTable#width width}
-* значенням {@linkplain ViewTable#DEFAULT_WIDTH DEFAULT_WIDTH}<br>
-* Викликає конструктор суперкласу {@linkplain ViewResult#ViewResult() ViewResult()}
+/** Устанавливает {@linkplain ViewTable#width width}
+* значеннием {@linkplain ViewTable#DEFAULT_WIDTH DEFAULT_WIDTH}<br>
+* Вызывает конструктор суперкласса {@linkplain ViewResult#ViewResult() ViewResult()}
 */
 public ViewTable() {
 width = DEFAULT_WIDTH;
 }
-/** Встановлює {@linkplain ViewTable#width} значенням <b>width</b><br>
-* Викликає конструктор суперкласу {@linkplain ViewResult#ViewResult() ViewResult()}
-* @param width визначає ширину таблиці
+/** Устанавливает {@linkplain ViewTable#width} значение <b>width</b><br>
+* Вызывает конструктор суперкласса {@linkplain ViewResult#ViewResult() ViewResult()}
+* @param width визначает ширину таблицы
 */
 public ViewTable(int width) {
 this.width = width;
@@ -787,84 +854,95 @@ this.width = width;
 
 /** Встановлює {@linkplain ViewTable#width} значенням <b>width</b><br>
 * Викликає конструктор суперкласу {@linkplain ViewResult#ViewResult(int n) ViewResult(int
-* @param width визначає ширину таблиці
-* @param n кількість елементів колекції; передається суперконструктору
+* @param width ширина таблицы
+* @param n количество елементов коллекции; передается суперконструктору
 */
 public ViewTable(int width, int n) {
 super(n);
 this.width = width;
 }
-/** Встановлює поле {@linkplain ViewTable#width} значенням <b>width</b>
-* @param width нова ширина таблиці
-* @return задана параметром <b>width</b> ширина таблиці
+/** Устанавливает поле {@linkplain ViewTable#width} значением <b>width</b>
+* @param width новая ширина таблицы
+* заданная параметром <b>width</b> ширина таблицы
 */
-public int setWidth(int width) {
-return this.width = width;
+@Override
+public void setWidth(int width) {
+this.width = width;
 }
-/** Повертає значення поля {@linkplain ViewTable#width}
-* @return поточна ширина таблиці
+/** Возвращает значение поля {@linkplain ViewTable#width}
+* @return текущая ширина таблицы
 */
+@Override
 public int getWidth() {
 return width;
 }
-/** Виводить вертикальний роздільник шириною {@linkplain ViewTable#width} символів */
+/** Выводит вертикальный разделитель шириной {@linkplain ViewTable#width} символов */
 private void outLine() {
 for(int i = width; i > 0; i--) {
 System.out.print('-');
 }
 }
-/** Викликає {@linkplain ViewTable#outLine()}; завершує вивід роздільником рядків */
+/** Вызывает {@linkplain ViewTable#outLine()}; завершает вывод разделителем рядов */
 private void outDelimiter() {
 outLine();
 System.out.println();
 }
-/** Виводить заголовок таблиці */
+/** Виводит заголовок таблицы */
 @Override
 public void viewHeader() {
 outDelimiter();
 }
-/** Виводить тіло таблиці */
+/** Виводит тело таблицы */
 @Override
 public void viewBody() {
     Formatter fmt = new Formatter();
     for(Item2d item : getItems()) {
         fmt.format("| %" + width + ".0f | %" + width + ".3f |\n",
-                    item.geta(), item.getCons1());
+                    item.getX(), item.getY());
     }
-    System.out.print(fmt.toString()); // Виводимо сформатований рядок
+    System.out.print(fmt.toString());
     fmt.close();
 }
 
-/** Виводить кінець таблиці */
+/** Выводит окончание таблицы */
 @Override
 public void viewFooter() {
 outDelimiter();
 }
-}
-```
-
-## ViewableTable:
-```java
-package ex03;
-
-import ex02.ViewableResult;
-import ex02.View;
-/** ConcreteCreator
-* (шаблон проектирования
-* Factory Method)<br>
-* Объявляет метод,
-* "фабрикующий" объекты
-* @author xone
-* @version 1.0
-* @see ViewableResult
-* @see ViewableTable#getView()
+/** Перегрузка (совмещение, overloading) метода суперкласса;
+* устанавливает поле {@linkplain ViewTable#width} значением <b>width</b><br>
+* Вызывает метод {@linkplain ViewResult#viewInit() viewInit()}
+* @param width новая ширина таблицы
 */
-public class ViewableTable extends ViewableResult {
-/** Создаёт отображаемый объект {@linkplain ViewTable}
-     * @return  */
-@Override
-public View getView() {
-    return new ViewTable();
-    }
+public final void Init(int width) { // method overloading
+this.width = width;
+viewInit();
 }
+/** Перегрузка метода суперкласса;
+* устанавливает поле {@linkplain ViewTable#width} значением <b>width</b><br>
+* Для объекта {@linkplain ViewTable} вызывает метод {@linkplain ViewTable#init(double
+* @param width новая ширина таблицы.
+* @param stepX передается методу <b>init(double)</b>
+*/
+public final void Init(int width, double stepX) { // method overloading
+this.width = width;
+Init(stepX);
+}
+/** Переопределение (замещение, overriding) метода суперкласса;
+* выводит информационное сообщение и вызывает метод суперкласса
+* {@linkplain ViewResult#init(double stepX) init(double stepX)}<br>
+* {@inheritDoc}
+*/
+@Override
+public void Init(double stepX) { // method overriding
+System.out.print("Initialization... ");
+super.Init(stepX);
+System.out.println("done. ");
+}
+}
+
 ```
+
+Результат:
+
+![](images/TaskResult3.png)
